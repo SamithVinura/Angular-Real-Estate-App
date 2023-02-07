@@ -7,6 +7,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { UserServiceService } from 'src/app/services/user-service.service';
 
 @Component({
   selector: 'app-user-register',
@@ -15,9 +16,9 @@ import {
 })
 export class UserRegisterComponent implements OnInit {
   registerationForm!: FormGroup;
-
+  user:any = {}
   userSubmitted!: boolean;
-  constructor(private fb:FormBuilder) {}
+  constructor(private fb:FormBuilder,private addUserService:UserServiceService) {}
 
   ngOnInit(): void {
     this.createRegisterationForm();
@@ -39,8 +40,14 @@ export class UserRegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.registerationForm);
+    console.log(this.registerationForm.value);
+    this.user = Object.assign(this.user,this.registerationForm.value)
+    this.addUserService.addUser(this.user)
+    this.registerationForm.reset()
   }
+
+
+
 
   onReset() {
     this.userSubmitted = false;
