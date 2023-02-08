@@ -16,7 +16,8 @@ import { UserRegisterComponent } from './user/user-register/user-register.compon
 import { UserServiceService } from './services/user-service.service';
 import { AlertyfyService } from './services/alertyfy.service';
 import { AuthService } from './services/auth.service';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { AuthService } from './services/auth.service';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    BsDropdownModule.forRoot()
   ],
   providers: [HousingService,UserServiceService,AlertyfyService,AuthService],
   bootstrap: [AppComponent]
