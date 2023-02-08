@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { User } from 'src/app/model/user';
+import { AlertyfyService } from 'src/app/services/alertyfy.service';
 import { UserServiceService } from 'src/app/services/user-service.service';
 
 @Component({
@@ -17,11 +18,12 @@ import { UserServiceService } from 'src/app/services/user-service.service';
 })
 export class UserRegisterComponent implements OnInit {
   registerationForm!: FormGroup;
-  user!: User
+  user!: User;
   userSubmitted!: boolean;
   constructor(
     private fb: FormBuilder,
-    private addUserService: UserServiceService
+    private addUserService: UserServiceService,
+    private alertfy: AlertyfyService
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +31,6 @@ export class UserRegisterComponent implements OnInit {
   }
 
   createRegisterationForm() {
-
     this.registerationForm = this.fb.group(
       {
         userName: [null, Validators.required],
@@ -48,24 +49,26 @@ export class UserRegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this.userSubmitted = true
+    this.userSubmitted = true;
 
     if (this.registerationForm.valid) {
       /* this.user = Object.assign(this.user, this.registerationForm.value); */
       this.addUserService.addUser(this.userData());
       this.registerationForm.reset();
-      this.userSubmitted = false
+      this.userSubmitted = false;
+    } else {
+      this.alertfy.error('Please provide all required details');
     }
   }
 
   userData(): User {
-    return this.user = {
-        userName: this.userName.value,
-        email: this.email.value,
-        password: this.password.value,
-        mobile: this.mobile.value
-    };
-}
+    return (this.user = {
+      userName: this.userName.value,
+      email: this.email.value,
+      password: this.password.value,
+      mobile: this.mobile.value,
+    });
+  }
 
   onReset() {
     this.userSubmitted = false;
