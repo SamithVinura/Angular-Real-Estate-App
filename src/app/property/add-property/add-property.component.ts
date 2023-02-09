@@ -1,5 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormGroup, NgForm } from '@angular/forms';
+import { TabsetComponent } from 'ngx-bootstrap/tabs/public_api';
+import { Ikeyvaluepair } from 'src/app/model/IKeyValuePair';
+import { IPropertyBase } from 'src/app/model/ipropertybase';
+import { Property } from 'src/app/model/property';
+import { IProperty } from '../property-list/Iproperty.interface';
 
 @Component({
   selector: 'app-add-property',
@@ -8,13 +14,31 @@ import { NgForm } from '@angular/forms';
 })
 export class AddPropertyComponent implements OnInit {
 
-  @ViewChild('form') addProperty!: NgForm
-  constructor() { }
+  @ViewChild('Form') addPropertyForm!: NgForm;
+  @ViewChild('formTabs') formTabs!: TabsetComponent;
 
-  ngOnInit(): void {
+  // Will come from masters
+  propertyTypes: Array<string> = ['House', 'Apartment', 'Duplex']
+  furnishTypes: Array<string> = ['Fully', 'Semi', 'Unfurnished']
+
+  propertyView: any = {};
+
+
+  constructor(private router: Router) { }
+
+  ngOnInit() {
   }
 
-  onSubmit(addProperty:NgForm){
-    console.log(addProperty)
+  onBack() {
+    this.router.navigate(['/']);
+  }
+
+  onSubmit() {
+    console.log('Congrats, form Submitted');
+    console.log(this.addPropertyForm);
+  }
+
+  selectTab(tabId: number) {
+    this.formTabs.tabs[tabId].active = true;
   }
 }
