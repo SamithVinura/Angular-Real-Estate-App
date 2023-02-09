@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { IProperty } from '../model/iproperty';
+import { Property } from '../model/property';
+import { IPropertyBase } from '../model/ipropertybase';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class HousingService {
 
   constructor(private http:HttpClient) { }
 
-  getAllProperties(SellRent:number):Observable<IProperty[]>{
+ /*  getAllProperties(SellRent:number):Observable<IProperty[]>{
     return this.http.get('data/properties.json').pipe(
       map(data => {
         const propertiesArray :Array<IProperty> =[]
@@ -24,5 +26,54 @@ export class HousingService {
         return propertiesArray;
       })
     )
+  } */
+
+  getAllProperties(SellRent: number): Observable<IPropertyBase[]> {
+    return this.http.get('data/properties.json').pipe(
+      map(data => {
+      const propertiesArray: Array<IPropertyBase> = [];
+      const localProperties = JSON.parse(localStorage.getItem('newProp') as string);
+      const jsonData = JSON.stringify(data)
+      const tmp: Array<IProperty> = JSON.parse(jsonData);
+      if (localProperties) {
+        for (const id in localProperties) {
+          if (localProperties.hasOwnProperty(id) && localProperties[id].SellRent === SellRent) {
+            propertiesArray.push(localProperties[id]);
+          }
+        }
+      }
+
+      for (const id in tmp) {
+        if (data.hasOwnProperty(id) && tmp[id].SellRent === SellRent) {
+          propertiesArray.push(tmp[id]);
+        }
+      }
+      return propertiesArray;
+      })
+    );
+
+    return this.http.get<IProperty[]>('data/properties.json');
+  }
+
+
+  addProperty(property: Property) {
+    let newProp = [property];
+    // Add new property in array if newProp alreay exists in local storage
+    if (localStorage.getItem('newProp')) {
+      newProp = [property,
+                  ...JSON.parse(localStorage.getItem('newProp') as string)];
+    }
+
+    localStorage.setItem('newProp', JSON.stringify(newProp));
+  }
+  newPropID() {
+    const  value :any = localStorage.getItem('PID')
+    if (localStorage.getItem('PID')) {
+      localStorage.setItem('PID', String(+value + 1));
+      return +value;
+    } else {
+      localStorage.setItem('PID', '101');
+      return 101;
+    }
   }
 }
