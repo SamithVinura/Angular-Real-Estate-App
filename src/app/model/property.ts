@@ -1,4 +1,4 @@
-import { IPropertyBase } from './ipropertybase';
+/* import { IPropertyBase } from './ipropertybase';
 import { Photo } from './photo';
 
 export class Property implements IPropertyBase {
@@ -30,3 +30,4 @@ export class Property implements IPropertyBase {
     description?: string;
     photos?: Photo[];
 }
+ */

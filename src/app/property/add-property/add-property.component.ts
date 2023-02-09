@@ -4,8 +4,7 @@ import { FormGroup, NgForm } from '@angular/forms';
 import { TabsetComponent } from 'ngx-bootstrap/tabs/public_api';
 import { Ikeyvaluepair } from 'src/app/model/IKeyValuePair';
 import { IPropertyBase } from 'src/app/model/ipropertybase';
-import { Property } from 'src/app/model/property';
-import { IProperty } from '../property-list/Iproperty.interface';
+/* import { Property } from 'src/app/model/property'; */
 
 @Component({
   selector: 'app-add-property',
@@ -21,7 +20,19 @@ export class AddPropertyComponent implements OnInit {
   propertyTypes: Array<string> = ['House', 'Apartment', 'Duplex']
   furnishTypes: Array<string> = ['Fully', 'Semi', 'Unfurnished']
 
-  propertyView: any = {};
+  propertyView: IPropertyBase = {
+    Id: null,
+    Name: '',
+    Price: null,
+    SellRent: null,
+    PType: null,
+    FType: null,
+    BHK: null,
+    BuiltArea: null,
+    City: null,
+    RTM: null
+  };
+
 
 
   constructor(private router: Router) { }
