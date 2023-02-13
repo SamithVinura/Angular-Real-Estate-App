@@ -8,22 +8,43 @@ import { IPropertyBase } from 'src/app/model/ipropertybase';
   styleUrls: ['./property-list.component.css'],
 })
 export class PropertyListComponent implements OnInit {
-  SellRent:number=1
-
-  properties!: IPropertyBase[];;
+  SellRent:number=1;
+  properties!: IPropertyBase[];
+  City = '';
+  SearchCity = '';
+  SortbyParam = '';
+  SortDirection = 'asc';
   constructor(private housing: HousingService,private route:ActivatedRoute) {}
 
   ngOnInit(): void {
-    if(this.route.snapshot.url.toString()){
-      this.SellRent =2
+    if (this.route.snapshot.url.toString()) {
+      this.SellRent = 2; // Means we are on rent-property URL else we are on base URL
     }
-    this.housing
-      .getAllProperties(this.SellRent)
-      .subscribe((data) => {
+    this.housing.getAllProperties(this.SellRent).subscribe(
+        data => {
         this.properties = data;
         console.log(data);
-      },error =>{
-          console.log(error)
-      });
+      }, error => {
+        console.log('httperror:');
+        console.log(error);
+      }
+    );
+  }
+
+  onCityFilter() {
+    this.SearchCity = this.City;
+  }
+
+  onCityFilterClear() {
+    this.SearchCity = '';
+    this.City = '';
+  }
+
+  onSortDirection() {
+    if (this.SortDirection === 'desc') {
+      this.SortDirection = 'asc';
+    } else {
+      this.SortDirection = 'desc';
+    }
   }
 }
